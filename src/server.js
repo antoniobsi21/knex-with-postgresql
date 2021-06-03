@@ -1,12 +1,11 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const routes = require('./routes')
 
-require('dotenv/config');
+const app = express()
+app.use(routes)
 
-app.get('/', (req, res) => {
-  res.send('Welcome');
-});
+require('dotenv/config')
 
-const PORT = process.env.PORT;
-const HOST = process.env.HOST;
-app.listen(PORT, HOST, () => console.log(`Server is running on http://${HOST}:${PORT}`));
+const PORT = process.env.PORT
+const HOST = process.env.HOST
+app.listen(PORT, HOST, () => console.log(`Server is running on http://${HOST}:${PORT}`))
