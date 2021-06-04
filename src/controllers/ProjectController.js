@@ -3,7 +3,18 @@ const knex = require('../database')
 module.exports = {
     async index(req, res, next) {
         try {
-            const results = await knex('users')
+            const { user_id } = req.query
+            
+            const query = knex('projects')
+
+            if(user_id){
+                query
+                .where({ user_id })
+                .join('users', 'users.id', '=', 'projects.user_id')
+                .select('projects.*', 'users.username')
+            }
+
+            const results = await query;
 
             return res.json(results)
         } catch(error) {
@@ -12,10 +23,11 @@ module.exports = {
     },
     async create(req, res, next) {
         try {
-            const { username } = req.body
+            const { title, user_id } = req.body
 
-            await knex('users').insert({
-              username
+            await knex('projects').insert({
+              title,
+              user_id
             })
 
             return res.status(201).send()
@@ -23,13 +35,15 @@ module.exports = {
             next(error)
         }
     },
+    // PUT
     async update(req, res, next) {
         try {
-            const { username } = req.body
+            const { title, user_id } = req.body
             const { id } = req.params
 
-            await knex('users')
-            .update({ username })
+            
+            await knex('projects')
+            .update({ title, user_id })
             .where({ id })
 
             return res.status(200).send()
@@ -42,7 +56,7 @@ module.exports = {
         try {
             const { id } = req.params
 
-            await knex('users')
+            await knex('projects')
             .where({ id })
             .del()
 
