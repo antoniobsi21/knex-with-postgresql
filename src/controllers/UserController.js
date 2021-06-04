@@ -5,6 +5,7 @@ module.exports = {
         try {
             const { page = 1 } = req.query
             const results = await knex('users')
+            .where('deleted_at', null)
             .limit(5)
             .offset((page - 1) * 5)
 
@@ -47,7 +48,7 @@ module.exports = {
 
             await knex('users')
             .where({ id })
-            .del()
+            .update('deleted_at', new Date())
 
             return res.status(200).send()
         } catch(error) {
