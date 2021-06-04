@@ -6,7 +6,7 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('projects').insert([
         {
-          user_id: 8,
+          user_id: 1,
           title: 'Knex with PostgreSQL'
         }
       ]);
