@@ -3,7 +3,10 @@ const knex = require('../database')
 module.exports = {
     async index(req, res, next) {
         try {
+            const { page = 1 } = req.query
             const results = await knex('users')
+            .limit(5)
+            .offset((page - 1) * 5)
 
             return res.json(results)
         } catch(error) {
